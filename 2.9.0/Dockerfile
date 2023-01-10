@@ -8,13 +8,18 @@ ENV	HOME=/root \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8
 
-# java 8: https://github.com/binarybabel/docker-jdk/blob/master/src/centos.Dockerfile
-ENV JAVA_DOWNLOAD=http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm
-RUN cd /tmp \
-    && curl -o jdk.rpm -jfksSLH "Cookie: oraclelicense=accept-securebackup-cookie" \
-       "${JAVA_DOWNLOAD:-$(curl -s https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.rpm)}" \
-    && rpm -Uvh jdk.rpm && rm jdk.rpm \
-    && echo "export JAVA_HOME=/usr/java/default/" > /etc/profile.d/java_home.sh
+# # java 8: https://github.com/binarybabel/docker-jdk/blob/master/src/centos.Dockerfile
+# ENV JAVA_DOWNLOAD=http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm
+# RUN cd /tmp \
+#     && curl -o jdk.rpm -jfksSLH "Cookie: oraclelicense=accept-securebackup-cookie" \
+#        "${JAVA_DOWNLOAD:-$(curl -s https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.rpm)}" \
+#     && rpm -Uvh jdk.rpm && rm jdk.rpm \
+#     && echo "export JAVA_HOME=/usr/java/default/" > /etc/profile.d/java_home.sh
+
+#java8
+RUN yum install -y java-1.8.0-openjdk
+RUN export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64/jre/bin/java
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.191.b12-1.el7_6.x86_64/jre/bin/java" > /etc/profile.d/java_home.sh
 
 # apache hadoop
 ARG HADOOP_INSTALL_DIR=/home/hadoop
