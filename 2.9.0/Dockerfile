@@ -17,9 +17,14 @@ ENV	HOME=/root \
 #     && echo "export JAVA_HOME=/usr/java/default/" > /etc/profile.d/java_home.sh
 
 #java8
+RUN yum -y update
 RUN yum install -y java-1.8.0-openjdk
+RUN java -version
+RUN update-alternatives --config java
+RUN update-alternatives --config java | grep java-1.8 | cut -d "(" -f2 | cut -d ")" -f1
 RUN export JAVA_HOME=$(update-alternatives --config java | grep java-1.8 | cut -d "(" -f2 | cut -d ")" -f1)
 RUN echo "export JAVA_HOME=$(update-alternatives --config java | grep java-1.8 | cut -d "(" -f2 | cut -d ")" -f1)" > /etc/profile.d/java_home.sh
+#RUN echo$(update-alternatives --config java | grep java-1.8 | cut -d "(" -f2 | cut -d ")" -f1)
 
 # apache hadoop
 ARG HADOOP_INSTALL_DIR=/home/hadoop
